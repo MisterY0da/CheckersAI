@@ -43,10 +43,14 @@ namespace Checkers
                         Console.ResetColor();
                         //////////////////////////////////////////////////
 
-                        MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, newRowEnd, newColEnd);
+                        thisMove = new Move(rowCurrent, colCurrent, newRowEnd, newColEnd);
 
-                        rowCurrent = newRowEnd;
-                        colCurrent = newColEnd;
+                        if (CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent).Contains(thisMove))
+                        {
+                            MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, newRowEnd, newColEnd);
+                            rowCurrent = newRowEnd;
+                            colCurrent = newColEnd;
+                        }                       
                     }
                 }
             }
@@ -117,7 +121,7 @@ namespace Checkers
 
                 // вверх-вправо
                 if(MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && (board[rowCurrent - 2][colCurrent + 2] == '_') && 
-                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 2][colCurrent + 2] == 'W'))
+                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 1][colCurrent + 1] == 'W'))
                 {
                     edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
                 }
@@ -149,7 +153,7 @@ namespace Checkers
 
                 // вверх-вправо
                 if(MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && (board[rowCurrent - 2][colCurrent + 2] == '_') && 
-                    (board[rowCurrent - 1][colCurrent + 1] == 'b' || board[rowCurrent - 2][colCurrent + 2] == 'B'))
+                    (board[rowCurrent - 1][colCurrent + 1] == 'b' || board[rowCurrent - 1][colCurrent + 1] == 'B'))
                 {
                     edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
                 }
@@ -181,118 +185,13 @@ namespace Checkers
 
                 // вверх-вправо
                 if(MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && (board[rowCurrent - 2][colCurrent + 2] == '_') && 
-                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 2][colCurrent + 2] == 'W'))
+                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 1][colCurrent + 1] == 'W'))
                 {
                     edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
                 }
             }
 
             return edibleMoves;
-        }
-
-        /*public bool CheckIfMoveEats(char[][] board, int rowStart, int colStart, int rowEnd, int colEnd)
-        {
-            // шашка белая
-            if (board[rowStart][colStart] == 'w' && _color == "white" && rowEnd - rowStart == 2 && Math.Abs(colEnd - colStart) == 2)
-            {
-                // вниз-влево
-                if (MoveIsInsideBoard(rowStart, colStart, rowStart + 2, colStart - 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart + 1][colStart - 1] == 'b' || board[rowStart + 1][colStart - 1] == 'B') && colEnd - colStart == -2)
-                {
-                    return true;
-                }
-
-                // вниз-вправо
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart + 2, colStart + 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart + 1][colStart + 1] == 'b' || board[rowStart + 1][colStart + 1] == 'B') && colEnd - colStart == 2)
-                {
-                    return true;
-                }
-            }
-
-            // шашка черная
-            else if (board[rowStart][colStart] == 'b' && _color == "black" && rowEnd - rowStart == -2 && Math.Abs(colEnd - colStart) == 2)
-            {
-                // вверх-влево
-                if (MoveIsInsideBoard(rowStart, colStart, rowStart - 2, colStart - 2)&& (colEnd - colStart == -2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart - 1][colStart - 1] == 'w' || board[rowStart - 1][colStart - 1] == 'W'))
-                {
-                    return true;
-                }
-
-                // вверх-вправо
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart - 2, colStart + 2) && (colEnd - colStart == 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart - 1][colStart + 1] == 'w' || board[rowStart - 1][colStart + 1] == 'W'))
-                {
-                    return true;
-                }
-            }
-
-            // дамка белая
-            else if (board[rowStart][colStart] == 'W' && _color == "white" && Math.Abs(rowEnd - rowStart) == 2 && Math.Abs(colEnd - colStart) == 2)
-            {
-                // вниз-влево
-                if (MoveIsInsideBoard(rowStart, colStart, rowStart + 2, colStart - 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart + 1][colStart - 1] == 'b' || board[rowStart + 1][colStart - 1] == 'B') && colEnd - colStart == -2 && rowEnd - rowStart == 2)
-                {
-                    return true;
-                }
-
-                // вниз-вправо
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart + 2, colStart + 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart + 1][colStart + 1] == 'b' || board[rowStart + 1][colStart + 1] == 'B') && colEnd - colStart == 2 && rowEnd - rowStart == 2)
-                {
-                    return true;
-                }
-
-                // вверх-влево
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart - 2, colStart - 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart - 1][colStart - 1] == 'b' || board[rowStart - 1][colStart - 1] == 'B') && colEnd - colStart == -2 && rowEnd - rowStart == -2)
-                {
-                    return true;
-                }
-
-                // вверх-вправо
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart - 2, colStart + 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart - 1][colStart + 1] == 'b' || board[rowStart - 1][colStart + 1] == 'B') && colEnd - colStart == 2 && rowEnd - rowStart == -2)
-                {
-                    return true;
-                }
-            }
-
-            // дамка черная
-            else if (board[rowStart][colStart] == 'B' && _color == "black" && Math.Abs(rowEnd - rowStart) == 2 && Math.Abs(colEnd - colStart) == 2)
-            {
-                // вниз-влево
-                if (MoveIsInsideBoard(rowStart, colStart, rowStart + 2, colStart - 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart + 1][colStart - 1] == 'w' || board[rowStart + 1][colStart - 1] == 'W') && (colEnd - colStart == -2 && rowEnd - rowStart == 2))
-                {
-                    return true;
-                }
-
-                // вниз-вправо
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart + 2, colStart + 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart + 1][colStart + 1] == 'w' || board[rowStart + 1][colStart + 1] == 'W') && colEnd - colStart == 2 && rowEnd - rowStart == 2)
-                {
-                    return true;
-                }
-
-                // вверх-влево
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart - 2, colStart - 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart - 1][colStart - 1] == 'w' || board[rowStart - 1][colStart - 1] == 'W') && colEnd - colStart == -2 && rowEnd - rowStart == -2)
-                {
-                    return true;
-                }
-
-                // вверх-вправо
-                else if (MoveIsInsideBoard(rowStart, colStart, rowStart - 2, colStart + 2) && (board[rowEnd][colEnd] == '_') &&
-                    (board[rowStart - 1][colStart + 1] == 'w' || board[rowStart - 1][colStart + 1] == 'W') && colEnd - colStart == 2 && rowEnd - rowStart == -2)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }*/
+        }       
     }   
 }
