@@ -29,17 +29,19 @@ namespace Checkers
             _currentPlayer = _player1.GetColor() == "black" ? _player1 : _player2;
         }
 
-        /*public void RestoreBoard(char[][] oldBoard)
-        {
-            if (oldBoard.Length == 8)
-            {
-                Array.Copy(oldBoard, _board, 8);
-            }
-        }*/
-
         public void ChangeBoardCell(int row, int col, char value)
         {
             _board[row][col] = value;
+        }
+
+        public bool GameIsOver()
+        {
+            if(_currentPlayer.GetAllAvailableMoves(_board).Count == 0)
+            {
+                return true;
+            }
+            
+            return false;
         }
 
         public void ShowBoard()

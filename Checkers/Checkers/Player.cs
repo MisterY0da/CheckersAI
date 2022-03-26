@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Checkers
 {
@@ -228,6 +229,181 @@ namespace Checkers
             }
 
             return enemyPieceEaten;
+        }
+
+        public List<Move> GetAllAvailableMoves(char[][] board)
+        {
+            List<Move> allAvailableMoves = new List<Move>();
+
+            for(int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    allAvailableMoves.AddRange(CurrentPieceAvailableMoves(board, row, col));
+                }
+            }
+
+            return allAvailableMoves;
+        }
+
+        public List<Move> CurrentPieceAvailableMoves(char[][] board, int rowCurrent, int colCurrent)
+        {
+            List<Move> availableMoves = new List<Move>();
+
+            // черная шашка
+            if (board[rowCurrent][colCurrent] == 'b' && _color == "black")
+            {
+                if(MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1) && board[rowCurrent - 1][colCurrent + 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent - 1) && board[rowCurrent - 1][colCurrent - 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 1, colCurrent - 1));
+                }
+
+                if(MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && board[rowCurrent - 2][colCurrent + 2] == '_' &&
+                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 1][colCurrent + 1] == 'W'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && board[rowCurrent - 2][colCurrent - 2] == '_' &&
+                    (board[rowCurrent - 1][colCurrent - 1] == 'w' || board[rowCurrent - 1][colCurrent - 1] == 'W'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2));
+                }
+            }
+
+            // шашка белая
+            else if (board[rowCurrent][colCurrent] == 'w' && _color == "white")
+            {
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1) && board[rowCurrent + 1][colCurrent + 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent - 1) && board[rowCurrent + 1][colCurrent - 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 1, colCurrent - 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2) && board[rowCurrent + 2][colCurrent + 2] == '_' &&
+                    (board[rowCurrent + 1][colCurrent + 1] == 'b' || board[rowCurrent + 1][colCurrent + 1] == 'B'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && board[rowCurrent + 2][colCurrent - 2] == '_' &&
+                    (board[rowCurrent + 1][colCurrent - 1] == 'b' || board[rowCurrent + 1][colCurrent - 1] == 'B'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2));
+                }
+            }
+
+            // дамка черных
+            else if (board[rowCurrent][colCurrent] == 'B' && _color == "black")
+            {
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1) && board[rowCurrent - 1][colCurrent + 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent - 1) && board[rowCurrent - 1][colCurrent - 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 1, colCurrent - 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && board[rowCurrent - 2][colCurrent + 2] == '_' &&
+                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 1][colCurrent + 1] == 'W'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && board[rowCurrent - 2][colCurrent - 2] == '_' &&
+                    (board[rowCurrent - 1][colCurrent - 1] == 'w' || board[rowCurrent - 1][colCurrent - 1] == 'W'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2));
+                }
+
+
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1) && board[rowCurrent + 1][colCurrent + 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent - 1) && board[rowCurrent + 1][colCurrent - 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 1, colCurrent - 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2) && board[rowCurrent + 2][colCurrent + 2] == '_' &&
+                    (board[rowCurrent + 1][colCurrent + 1] == 'w' || board[rowCurrent + 1][colCurrent + 1] == 'W'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && board[rowCurrent + 2][colCurrent - 2] == '_' &&
+                    (board[rowCurrent + 1][colCurrent - 1] == 'w' || board[rowCurrent + 1][colCurrent - 1] == 'W'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2));
+                }
+            }         
+
+            // дамка белых
+            else if (board[rowCurrent][colCurrent] == 'W' && _color == "white")
+            {
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1) && board[rowCurrent - 1][colCurrent + 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent - 1) && board[rowCurrent - 1][colCurrent - 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 1, colCurrent - 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && board[rowCurrent - 2][colCurrent + 2] == '_' &&
+                    (board[rowCurrent - 1][colCurrent + 1] == 'b' || board[rowCurrent - 1][colCurrent + 1] == 'B'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && board[rowCurrent - 2][colCurrent - 2] == '_' &&
+                    (board[rowCurrent - 1][colCurrent - 1] == 'b' || board[rowCurrent - 1][colCurrent - 1] == 'B'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2));
+                }
+
+
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1) && board[rowCurrent + 1][colCurrent + 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent - 1) && board[rowCurrent + 1][colCurrent - 1] == '_')
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 1, colCurrent - 1));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2) && board[rowCurrent + 2][colCurrent + 2] == '_' &&
+                    (board[rowCurrent + 1][colCurrent + 1] == 'b' || board[rowCurrent + 1][colCurrent + 1] == 'B'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2));
+                }
+
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && board[rowCurrent + 2][colCurrent - 2] == '_' &&
+                    (board[rowCurrent + 1][colCurrent - 1] == 'b' || board[rowCurrent + 1][colCurrent - 1] == 'B'))
+                {
+                    availableMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2));
+                }
+            }
+
+            return availableMoves;
+
         }
 
         protected bool MoveIsInsideBoard(int rowStart, int colStart, int rowEnd, int colEnd)
