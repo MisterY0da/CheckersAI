@@ -1,148 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Checkers
 {
     public class ComputerPlayer : Player
     {
         public ComputerPlayer(string someColor) : base(someColor) { }
 
+        public override void CreateMove(GameState gs)
+        {
+            List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
+
+            Random rnd = new Random();
+
+            int moveIndex = rnd.Next(0, moves.Count);
+
+            TakeMove(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart, 
+                         moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
+        }
+
         public override void TakeMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
         {
-            MovePieceOnceCheckEaten(gs, rowStart, colStart, rowEnd, colEnd);
+            string boardBeforeMove = gs.GetBoardString();
 
-            // если не стали дамкой, то продолжаем есть по возможности
-            if(! (gs.GetBoard()[rowEnd][colEnd] == 'B' && rowEnd == 0 || gs.GetBoard()[rowEnd][colEnd] == 'W' && rowEnd == 7) )
+            if (MustEatThisMove(gs.GetBoard()) == true)
             {
-                int rowCurrent = rowEnd;
-                int colCurrent = colEnd;
+                Move thisMove = new Move(rowStart, colStart, rowEnd, colEnd);
 
-                while (GetEdibleDirection(gs.GetBoard(), rowCurrent, colCurrent) != "missing")
+                if (CurrentPieceEdibleMoves(gs.GetBoard(), rowStart, colStart).Contains(thisMove))
                 {
-                    switch (GetEdibleDirection(gs.GetBoard(), rowCurrent, colCurrent))
+                    MovePieceOnceCheckEaten(gs, rowStart, colStart, rowEnd, colEnd);
+                }
+
+                // если не стали дамкой и съели предыдущим ходом, то продолжаем есть по возможности
+                if (!(gs.GetBoard()[rowEnd][colEnd] == 'B' && rowEnd == 0 || gs.GetBoard()[rowEnd][colEnd] == 'W' && rowEnd == 7))
+                {
+                    int rowCurrent = rowEnd;
+                    int colCurrent = colEnd;
+
+                    while (CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent).Count > 0)
                     {
-                        case "up-right":
-                            MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2);
-                            rowCurrent -= 2;
-                            colCurrent += 2;
-                            break;
+                        List<Move> moves = CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent);
 
-                        case "up-left":
-                            MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2);
-                            rowCurrent -= 2;
-                            colCurrent -= 2;
-                            break;
+                        Random rnd = new Random();
 
-                        case "down-right":
-                            MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2);
-                            rowCurrent += 2;
-                            colCurrent += 2;
-                            break;
+                        int moveIndex = rnd.Next(0, moves.Count);
 
-                        case "down-left":
-                            MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2);
-                            rowCurrent += 2;
-                            colCurrent -= 2;
-                            break;
-
-                        default:
-                            break;
+                        MovePieceOnceCheckEaten(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart,
+                                                moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
                     }
                 }
             }
 
-            gs.SwitchPlayer();
-        }
-
-        public string GetEdibleDirection(char[][] board, int rowCurrent, int colCurrent)
-        {
-            // шашка белая
-            if (board[rowCurrent][colCurrent] == 'w')
+            else
             {
-                // вниз-влево
-                if ((board[rowCurrent + 2][colCurrent - 2] == '_') && (board[rowCurrent + 1][colCurrent - 1] == 'b' || board[rowCurrent + 1][colCurrent - 1] == 'B'))
-                {
-                    return "down-left";
-                }
-
-                // вниз-вправо
-                else if ((board[rowCurrent + 2][colCurrent + 2] == '_') && (board[rowCurrent + 1][colCurrent + 1] == 'b' || board[rowCurrent + 1][colCurrent + 1] == 'B'))
-                {
-                    return "down-right";
-                }
+                MovePieceOnceCheckEaten(gs, rowStart, colStart, rowEnd, colEnd);
             }
 
-            // шашка черная
-            else if (board[rowCurrent][colCurrent] == 'b')
+            string boardAfterMove = gs.GetBoardString();
+
+            if (!boardAfterMove.Equals(boardBeforeMove))
             {
-                // вверх-влево
-                if ((board[rowCurrent - 2][colCurrent - 2] == '_') && (board[rowCurrent - 1][colCurrent - 1] == 'w' || board[rowCurrent - 1][colCurrent - 1] == 'W'))
-                {
-                    return "up-left";
-                }
-
-                // вверх-вправо
-                else if ((board[rowCurrent - 2][colCurrent + 2] == '_') && (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 2][colCurrent + 2] == 'W'))
-                {
-                    return "up-right";
-                }
+                gs.SwitchPlayer();
             }
-
-            // дамка белая
-            else if (board[rowCurrent][colCurrent] == 'W')
-            {
-                // вниз-влево
-                if ((board[rowCurrent + 2][colCurrent - 2] == '_') && (board[rowCurrent + 1][colCurrent - 1] == 'b' || board[rowCurrent + 1][colCurrent - 1] == 'B'))
-                {
-                    return "down-left";
-                }
-
-                // вниз-вправо
-                else if ((board[rowCurrent + 2][colCurrent + 2] == '_') && (board[rowCurrent + 1][colCurrent + 1] == 'b' || board[rowCurrent + 1][colCurrent + 1] == 'B'))
-                {
-                    return "down-right";
-                }
-
-                // вверх-влево
-                else if ((board[rowCurrent - 2][colCurrent - 2] == '_') && (board[rowCurrent - 1][colCurrent - 1] == 'b' || board[rowCurrent - 1][colCurrent - 1] == 'B'))
-                {
-                    return "up-left";
-                }
-
-                // вверх-вправо
-                else if ((board[rowCurrent - 2][colCurrent + 2] == '_') && (board[rowCurrent - 1][colCurrent + 1] == 'b' || board[rowCurrent - 2][colCurrent + 2] == 'B'))
-                {
-                    return "up-right";
-                }
-            }
-
-            // дамка черная
-            else if (board[rowCurrent][colCurrent] == 'B')
-            {
-                // вниз-влево
-                if ((board[rowCurrent + 2][colCurrent - 2] == '_') && (board[rowCurrent + 1][colCurrent - 1] == 'w' || board[rowCurrent + 1][colCurrent - 1] == 'W'))
-                {
-                    return "down-left";
-                }
-
-                // вниз-вправо
-                else if ((board[rowCurrent + 2][colCurrent + 2] == '_') && (board[rowCurrent + 1][colCurrent + 1] == 'w' || board[rowCurrent + 1][colCurrent + 1] == 'W'))
-                {
-                    return "down-right";
-                }
-
-                // вверх-влево
-                else if ((board[rowCurrent - 2][colCurrent - 2] == '_') && (board[rowCurrent - 1][colCurrent - 1] == 'w' || board[rowCurrent - 1][colCurrent - 1] == 'W'))
-                {
-                    return "up-left";
-                }
-
-                // вверх-вправо
-                else if ((board[rowCurrent - 2][colCurrent + 2] == '_') && (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 2][colCurrent + 2] == 'W'))
-                {
-                    return "up-right";
-                }
-            }
-
-            return "missing";
         }
     }
 }

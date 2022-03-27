@@ -21,6 +21,11 @@ namespace Checkers
 
         }
 
+        public virtual void CreateMove(GameState gs)
+        {
+
+        }
+
         public bool MovePieceOnceCheckEaten(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
         {
             bool enemyPieceEaten = false;
@@ -410,6 +415,129 @@ namespace Checkers
         {
             return (rowStart >= 0 && rowStart < 8 && colStart >= 0 && colStart < 8 &&
                 rowEnd >= 0 && rowEnd < 8 && colEnd >= 0 && colEnd < 8);
+        }
+
+        public bool MustEatThisMove(char[][] board)
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    if (CurrentPieceEdibleMoves(board, row, col).Count > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public List<Move> CurrentPieceEdibleMoves(char[][] board, int rowCurrent, int colCurrent)
+        {
+            List<Move> edibleMoves = new List<Move>();
+
+            // шашка белая
+            if (board[rowCurrent][colCurrent] == 'w' && _color == "white")
+            {
+                // вниз-влево
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && (board[rowCurrent + 2][colCurrent - 2] == '_') &&
+                    (board[rowCurrent + 1][colCurrent - 1] == 'b' || board[rowCurrent + 1][colCurrent - 1] == 'B'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2));
+                }
+
+                // вниз-вправо
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2) && (board[rowCurrent + 2][colCurrent + 2] == '_') &&
+                    (board[rowCurrent + 1][colCurrent + 1] == 'b' || board[rowCurrent + 1][colCurrent + 1] == 'B'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2));
+                }
+            }
+
+            // шашка черная
+            else if (board[rowCurrent][colCurrent] == 'b' && _color == "black")
+            {
+                // вверх-влево
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && (board[rowCurrent - 2][colCurrent - 2] == '_') &&
+                    (board[rowCurrent - 1][colCurrent - 1] == 'w' || board[rowCurrent - 1][colCurrent - 1] == 'W'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2));
+                }
+
+                // вверх-вправо
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && (board[rowCurrent - 2][colCurrent + 2] == '_') &&
+                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 1][colCurrent + 1] == 'W'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
+                }
+            }
+
+            // дамка белая
+            else if (board[rowCurrent][colCurrent] == 'W' && _color == "white")
+            {
+                // вниз-влево
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && (board[rowCurrent + 2][colCurrent - 2] == '_') &&
+                    (board[rowCurrent + 1][colCurrent - 1] == 'b' || board[rowCurrent + 1][colCurrent - 1] == 'B'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2));
+                }
+
+                // вниз-вправо
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2) && (board[rowCurrent + 2][colCurrent + 2] == '_') &&
+                    (board[rowCurrent + 1][colCurrent + 1] == 'b' || board[rowCurrent + 1][colCurrent + 1] == 'B'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2));
+                }
+
+                // вверх-влево
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && (board[rowCurrent - 2][colCurrent - 2] == '_') &&
+                    (board[rowCurrent - 1][colCurrent - 1] == 'b' || board[rowCurrent - 1][colCurrent - 1] == 'B'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2));
+                }
+
+                // вверх-вправо
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && (board[rowCurrent - 2][colCurrent + 2] == '_') &&
+                    (board[rowCurrent - 1][colCurrent + 1] == 'b' || board[rowCurrent - 1][colCurrent + 1] == 'B'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
+                }
+            }
+
+            // дамка черная
+            else if (board[rowCurrent][colCurrent] == 'B' && _color == "black")
+            {
+                // вниз-влево
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && (board[rowCurrent + 2][colCurrent - 2] == '_') &&
+                    (board[rowCurrent + 1][colCurrent - 1] == 'w' || board[rowCurrent + 1][colCurrent - 1] == 'W'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2));
+                }
+
+                // вниз-вправо
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2) && (board[rowCurrent + 2][colCurrent + 2] == '_') &&
+                    (board[rowCurrent + 1][colCurrent + 1] == 'w' || board[rowCurrent + 1][colCurrent + 1] == 'W'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent + 2, colCurrent + 2));
+                }
+
+                // вверх-влево
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && (board[rowCurrent - 2][colCurrent - 2] == '_') &&
+                    (board[rowCurrent - 1][colCurrent - 1] == 'w' || board[rowCurrent - 1][colCurrent - 1] == 'W'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2));
+                }
+
+                // вверх-вправо
+                if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2) && (board[rowCurrent - 2][colCurrent + 2] == '_') &&
+                    (board[rowCurrent - 1][colCurrent + 1] == 'w' || board[rowCurrent - 1][colCurrent + 1] == 'W'))
+                {
+                    edibleMoves.Add(new Move(rowCurrent, colCurrent, rowCurrent - 2, colCurrent + 2));
+                }
+            }
+
+            return edibleMoves;
         }
     }
 }
