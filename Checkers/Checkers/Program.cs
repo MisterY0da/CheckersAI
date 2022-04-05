@@ -6,7 +6,7 @@ namespace Checkers
     {
         static void Main(string[] args)
         {
-            Player p1 = new HumanPlayer("black");
+            Player p1 = new ComputerPlayer("black");
             Player p2 = new ComputerPlayer("white");
             GameState gs = new GameState(p1, p2);
             gs.ShowBoard();
@@ -25,6 +25,7 @@ namespace Checkers
                     gs.ShowBoard();
                     Console.WriteLine();
                     Console.WriteLine();
+                    Console.ReadLine();
                 }
             }
         }
