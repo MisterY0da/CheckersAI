@@ -16,12 +16,12 @@ namespace Checkers
             return _color;
         }
 
-        public virtual void TakeMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
+        public virtual void TakeFullMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
         {
 
         }
 
-        public virtual void CreateMove(GameState gs)
+        public virtual void GenerateNewMove(GameState gs)
         {
 
         }

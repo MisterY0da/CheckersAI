@@ -8,7 +8,9 @@ namespace Checkers
 {
     public class QLearning
     {
-        public int[,] qTable = new int[64, 64];
+        public int[][] qTable = new int[64][];
+        public const double alpha = 0.1;
+        public const double gamma = 0.8;
 
         public QLearning()
         {
@@ -16,7 +18,7 @@ namespace Checkers
             {
                 for (int j = 0; j < 64; j++)
                 {
-                    qTable[i, j] = 0;
+                    qTable[i][j] = 0;
                 }
             }
         }
@@ -24,6 +26,15 @@ namespace Checkers
         public static int ConvertCoordsToState(int row, int col)
         {
             return row * 8 + col;
+        }
+
+        public static int[] ConvertStateToCoords(int state)
+        {
+            int[] rowCol = new int[2];
+            rowCol[0] = state / 8;
+            rowCol[1] = state % 8;
+
+            return rowCol;
         }
 
         public int GetReward(bool eaten, bool becameKing, bool gameEnded)
@@ -48,9 +59,12 @@ namespace Checkers
             return rewardPoints;
         }
 
-        public void Train()
+        public void Train(int numberOfGames)
         {
-
+            for (int gameIndex = 0; gameIndex < numberOfGames; gameIndex++)
+            {
+                //while game is not ended
+            }
         }
     }
 }

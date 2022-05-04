@@ -10,7 +10,7 @@ namespace Checkers
     {
         public HumanPlayer(string someColor) : base(someColor) { }
 
-        public override void CreateMove(GameState gs)
+        public override void GenerateNewMove(GameState gs)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("Input rowStart: ");
@@ -32,10 +32,10 @@ namespace Checkers
             int colEnd = int.Parse(Console.ReadLine());
             Console.ResetColor();
 
-            TakeMove(gs, rowStart, colStart, rowEnd, colEnd);
+            TakeFullMove(gs, rowStart, colStart, rowEnd, colEnd);
         }
 
-        public override void TakeMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
+        public override void TakeFullMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
         {
             string boardBeforeMove = gs.GetBoardString();           
 

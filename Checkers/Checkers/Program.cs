@@ -15,7 +15,7 @@ namespace Checkers
             while(gs.GameIsOver() == false)
             {
                 string colorBeforeMove = gs.GetCurrentPlayer().GetColor();
-                gs.GetCurrentPlayer().CreateMove(gs);
+                gs.GetCurrentPlayer().GenerateNewMove(gs);
                 string colorAfterMove = gs.GetCurrentPlayer().GetColor();
 
                 if (colorBeforeMove != colorAfterMove)

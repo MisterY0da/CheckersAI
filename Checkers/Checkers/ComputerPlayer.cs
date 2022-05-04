@@ -5,9 +5,15 @@ namespace Checkers
 {
     public class ComputerPlayer : Player
     {
-        public ComputerPlayer(string someColor) : base(someColor) { }
+        public QLearning qLearning;
+        public ComputerMode currentMode;
+        public ComputerPlayer(string someColor, QLearning qLearning, ComputerMode mode) : base(someColor) 
+        { 
+            this.qLearning = qLearning;
+            currentMode = mode;
+        }
 
-        public override void CreateMove(GameState gs)
+        public override void GenerateNewMove(GameState gs)
         {
             List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
 
@@ -15,11 +21,11 @@ namespace Checkers
 
             int moveIndex = rnd.Next(0, moves.Count);
 
-            TakeMove(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart, 
+            TakeFullMove(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart, 
                          moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
         }
 
-        public override void TakeMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
+        public override void TakeFullMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
         {
             string boardBeforeMove = gs.GetBoardString();
 
