@@ -16,13 +16,22 @@ namespace Checkers
 
         public override void GenerateNewMove(GameState gs)
         {
+            List<Move> allAvailableMoves = GetAllAvailableMoves(gs.GetBoard());
+
+            Move optimalMove = GetOptimalMove(allAvailableMoves);
+
+            TakeFullMove(gs, optimalMove.RowStart, optimalMove.ColStart, optimalMove.RowEnd, optimalMove.ColEnd);
+        }
+
+        public void GenerateNewRandomMove(GameState gs)
+        {
             List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
 
             Random rnd = new Random();
 
             int moveIndex = rnd.Next(0, moves.Count);
 
-            TakeFullMove(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart, 
+            TakeFullMove(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart,
                          moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
         }
 
@@ -48,16 +57,13 @@ namespace Checkers
                     while (CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent).Count > 0 && 
                         !BecameKing(gs, rowCurrent, colCurrent))
                     {
-                        List<Move> moves = CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent);
+                        List<Move> edibleMoves = CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent);
 
-                        Random rnd = new Random();
+                        Move optimalMove = GetOptimalMove(edibleMoves);
 
-                        int moveIndex = rnd.Next(0, moves.Count);
-
-                        MovePieceOnce(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart,
-                                                moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
-                        rowCurrent = moves[moveIndex].RowEnd;
-                        colCurrent = moves[moveIndex].ColEnd;
+                        MovePieceOnce(gs, optimalMove.RowStart, optimalMove.ColStart, optimalMove.RowEnd, optimalMove.ColEnd);
+                        rowCurrent = optimalMove.RowEnd;
+                        colCurrent = optimalMove.ColEnd;
                     }
                 }
             }
@@ -145,6 +151,23 @@ namespace Checkers
             {
                 gs.SwitchPlayer();
             }
+        }
+
+        public Move GetOptimalMove(List<Move> allAvailableMoves)
+        {
+            double max = -100;
+            Move optimalMove = new Move();
+            foreach (var move in allAvailableMoves)
+            {
+                int currentState = qLearning.GetStateFromCoords(move.RowStart, move.ColStart);
+                int currentAction = qLearning.GetStateFromCoords(move.RowEnd, move.ColEnd);
+                if(qLearning.qTable[currentState][currentAction] > max)
+                {
+                    max = qLearning.qTable[currentState][currentAction];
+                    optimalMove = new Move(move.RowStart, move.ColStart, move.RowEnd, move.ColEnd);
+                }
+            }
+            return optimalMove;
         }
     }
 }

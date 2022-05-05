@@ -21,6 +21,8 @@ namespace Checkers
             ColEnd = colEnd;
         }
 
+        public Move() { }
+
         public bool Equals(Move other)
         {
             return RowStart == other.RowStart && ColStart == other.ColStart &&

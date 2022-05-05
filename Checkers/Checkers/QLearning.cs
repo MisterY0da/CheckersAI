@@ -44,17 +44,17 @@ namespace Checkers
 
             if(eaten)
             {
-                rewardPoints += 1;
+                rewardPoints += 2;
             }
 
             if(becameKing)
             {
-                rewardPoints += 3;
+                rewardPoints += 5;
             }
 
             if(gameEnded)
             {
-                rewardPoints += 10;
+                rewardPoints += 20;
             }
 
             return rewardPoints;
