@@ -6,13 +6,14 @@ namespace Checkers
     {
         static void Main(string[] args)
         {
-            Player p1 = new ComputerPlayer("black");
-            Player p2 = new ComputerPlayer("white");
+            QLearning qLearning = new QLearning();
+            Player p1 = new ComputerPlayer("white", qLearning);
+            Player p2 = new ComputerPlayer("black", qLearning);
             GameState gs = new GameState(p1, p2);
             gs.ShowBoard();
             Console.WriteLine();
 
-            while(gs.GameIsOver() == false)
+            while (gs.GameIsOver() == false)
             {
                 string colorBeforeMove = gs.GetCurrentPlayer().GetColor();
                 gs.GetCurrentPlayer().GenerateNewMove(gs);

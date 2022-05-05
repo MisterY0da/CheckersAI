@@ -8,14 +8,15 @@ namespace Checkers
 {
     public class QLearning
     {
-        public int[][] qTable = new int[64][];
-        public const double alpha = 0.1;
-        public const double gamma = 0.8;
+        public double[][] qTable = new double[64][];
+        public double alpha = 0.1;
+        public double gamma = 0.8;
 
         public QLearning()
         {
             for (int i = 0; i < 64; i++)
             {
+                qTable[i] = new double[64];
                 for (int j = 0; j < 64; j++)
                 {
                     qTable[i][j] = 0;
@@ -23,12 +24,12 @@ namespace Checkers
             }
         }
 
-        public static int ConvertCoordsToState(int row, int col)
+        public int GetStateFromCoords(int row, int col)
         {
             return row * 8 + col;
         }
 
-        public static int[] ConvertStateToCoords(int state)
+        public int[] GetCoordsFromState(int state)
         {
             int[] rowCol = new int[2];
             rowCol[0] = state / 8;
@@ -57,6 +58,12 @@ namespace Checkers
             }
 
             return rewardPoints;
+        }
+
+        public void UpdateQTable(int currentState, int currentAction, int reward)
+        {
+            int newState = currentAction;
+            qTable[currentState][currentAction] += alpha * (reward + gamma * qTable[newState].Max() - qTable[currentState][currentAction]);
         }
 
         public void Train(int numberOfGames)

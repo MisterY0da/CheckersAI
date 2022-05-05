@@ -38,6 +38,8 @@ namespace Checkers
         {
             if(_currentPlayer.GetAllAvailableMoves(_board).Count == 0)
             {
+                this.SwitchPlayer();
+                _currentPlayer.isWinner = true;
                 return true;
             }
             

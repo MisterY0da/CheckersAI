@@ -45,16 +45,17 @@ namespace Checkers
 
                 if (CurrentPieceEdibleMoves(gs.GetBoard(), rowStart, colStart).Contains(thisMove))
                 {
-                    MovePieceOnceCheckEaten(gs, rowStart, colStart, rowEnd, colEnd);
+                    MovePieceOnce(gs, rowStart, colStart, rowEnd, colEnd);
                 }
 
                 // если не стали дамкой и съели предыдущим ходом, то продолжаем есть по возможности
-                if ( !(gs.GetBoard()[rowEnd][colEnd] == 'B' && rowEnd == 0 || gs.GetBoard()[rowEnd][colEnd] == 'W' && rowEnd == 7) )
+                if (!BecameKing(gs, rowEnd, colEnd))
                 {
                     int rowCurrent = rowEnd;
                     int colCurrent = colEnd;
 
-                    while (CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent).Count > 0)
+                    while (CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent).Count > 0 && 
+                        !BecameKing(gs, rowCurrent, colCurrent))
                     {
                         //////////////////////////////////////////////////
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -72,7 +73,7 @@ namespace Checkers
 
                         if (CurrentPieceEdibleMoves(gs.GetBoard(), rowCurrent, colCurrent).Contains(thisMove))
                         {
-                            MovePieceOnceCheckEaten(gs, rowCurrent, colCurrent, newRowEnd, newColEnd);
+                            MovePieceOnce(gs, rowCurrent, colCurrent, newRowEnd, newColEnd);
                             rowCurrent = newRowEnd;
                             colCurrent = newColEnd;
                         }                       
@@ -83,7 +84,7 @@ namespace Checkers
             else
             {
                 
-                MovePieceOnceCheckEaten(gs, rowStart, colStart, rowEnd, colEnd);               
+                MovePieceOnce(gs, rowStart, colStart, rowEnd, colEnd);               
             }
 
             string boardAfterMove = gs.GetBoardString();

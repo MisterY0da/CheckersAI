@@ -6,6 +6,7 @@ namespace Checkers
     public class Player
     {
         protected string _color;
+        public bool isWinner = false;
         public Player(string someColor)
         {
             _color = someColor;
@@ -26,9 +27,9 @@ namespace Checkers
 
         }
 
-        public bool MovePieceOnceCheckEaten(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
+        public void MovePieceOnce(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
         {
-            bool enemyPieceEaten = false;
+
 
             if (MoveIsInsideBoard(rowStart, colStart, rowEnd, colEnd))
             {
@@ -57,7 +58,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'b');
                             gs.ChangeBoardCell(rowStart - 1, colStart - 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вверх-вправо
@@ -67,7 +68,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'b');
                             gs.ChangeBoardCell(rowStart - 1, colStart + 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // становится дамкой
@@ -97,7 +98,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'B');
                             gs.ChangeBoardCell(rowStart + 1, colStart - 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вниз-вправо
@@ -107,7 +108,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'B');
                             gs.ChangeBoardCell(rowStart + 1, colStart + 1, '_');
-                            enemyPieceEaten = true;
+                           
                         }
 
                         // вверх-влево
@@ -117,7 +118,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'B');
                             gs.ChangeBoardCell(rowStart - 1, colStart - 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вверх-вправо
@@ -127,7 +128,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'B');
                             gs.ChangeBoardCell(rowStart - 1, colStart + 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
                     }
                 }
@@ -157,7 +158,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'w');
                             gs.ChangeBoardCell(rowStart + 1, colStart - 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вниз-вправо
@@ -167,7 +168,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'w');
                             gs.ChangeBoardCell(rowStart + 1, colStart + 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // становится дамкой
@@ -197,7 +198,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'W');
                             gs.ChangeBoardCell(rowStart + 1, colStart - 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вниз-вправо
@@ -207,7 +208,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'W');
                             gs.ChangeBoardCell(rowStart + 1, colStart + 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вверх-влево
@@ -217,7 +218,7 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'W');
                             gs.ChangeBoardCell(rowStart - 1, colStart - 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
 
                         // вверх-вправо
@@ -227,13 +228,13 @@ namespace Checkers
                             gs.ChangeBoardCell(rowStart, colStart, '_');
                             gs.ChangeBoardCell(rowEnd, colEnd, 'W');
                             gs.ChangeBoardCell(rowStart - 1, colStart + 1, '_');
-                            enemyPieceEaten = true;
+                            
                         }
                     }
                 }
             }
 
-            return enemyPieceEaten;
+           
         }
 
         public List<Move> GetAllAvailableMoves(char[][] board)
@@ -538,6 +539,12 @@ namespace Checkers
             }
 
             return edibleMoves;
+        }
+
+        public bool BecameKing(GameState gs, int row, int col)
+        {
+            return gs.GetBoard()[row][col] == 'B' && row == 0 ||
+                gs.GetBoard()[row][col] == 'W' && row == 7;
         }
     }
 }
