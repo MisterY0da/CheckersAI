@@ -6,7 +6,6 @@ namespace Checkers
     public class Player
     {
         protected string _color;
-        public bool isWinner = false;
         public Player(string someColor)
         {
             _color = someColor;

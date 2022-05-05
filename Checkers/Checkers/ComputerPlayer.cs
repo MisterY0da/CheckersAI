@@ -31,7 +31,20 @@ namespace Checkers
 
             int moveIndex = rnd.Next(0, moves.Count);
 
+            
             TakeFullMove(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart,
+                         moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
+        }
+
+        public void GenerateNewMoveLearning(GameState gs)
+        {
+            List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
+
+            Random rnd = new Random();
+
+            int moveIndex = rnd.Next(0, moves.Count);
+
+            TakeFullMoveLearning(gs, moves[moveIndex].RowStart, moves[moveIndex].ColStart,
                          moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
         }
 
@@ -96,8 +109,7 @@ namespace Checkers
                     MovePieceOnce(gs, rowStart, colStart, rowEnd, colEnd);
 
                     bool becameKing = BecameKing(gs, rowEnd, colEnd);
-                    bool gameEnded = isWinner;
-                    int reward = qLearning.GetReward(true, becameKing, gameEnded);
+                    int reward = qLearning.GetReward(true, becameKing);
 
                     qLearning.UpdateQTable(currentState, currentAction, reward);             
                 }
@@ -123,8 +135,7 @@ namespace Checkers
                                                 moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
 
                         bool becameKing = BecameKing(gs, moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
-                        bool gameEnded = isWinner;
-                        int reward = qLearning.GetReward(true, becameKing, gameEnded);
+                        int reward = qLearning.GetReward(true, becameKing);
                         currentAction = qLearning.GetStateFromCoords(moves[moveIndex].RowEnd, moves[moveIndex].ColEnd);
 
                         qLearning.UpdateQTable(currentState, currentAction, reward);
@@ -140,8 +151,7 @@ namespace Checkers
             {
                 MovePieceOnce(gs, rowStart, colStart, rowEnd, colEnd);
                 bool becameKing = BecameKing(gs, rowEnd, colEnd);
-                bool gameEnded = isWinner;
-                int reward = qLearning.GetReward(false, becameKing, gameEnded);
+                int reward = qLearning.GetReward(false, becameKing);
                 qLearning.UpdateQTable(currentState, currentAction, reward);
             }
 

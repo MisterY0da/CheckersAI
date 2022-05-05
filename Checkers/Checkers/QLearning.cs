@@ -38,23 +38,18 @@ namespace Checkers
             return rowCol;
         }
 
-        public int GetReward(bool eaten, bool becameKing, bool gameEnded)
+        public int GetReward(bool eaten, bool becameKing)
         {
             int rewardPoints = 0;
 
             if(eaten)
             {
-                rewardPoints += 2;
+                rewardPoints += 20;
             }
 
             if(becameKing)
             {
                 rewardPoints += 5;
-            }
-
-            if(gameEnded)
-            {
-                rewardPoints += 20;
             }
 
             return rewardPoints;
@@ -70,7 +65,24 @@ namespace Checkers
         {
             for (int gameIndex = 0; gameIndex < numberOfGames; gameIndex++)
             {
-                //while game is not ended
+                ComputerPlayer p1 = new ComputerPlayer("black", this);
+                ComputerPlayer p2 = new ComputerPlayer("white", this);
+                GameState gs = new GameState(p1, p2);
+                
+
+                while (gs.GameIsOver() == false)
+                {
+                    string colorBeforeMove = gs.GetCurrentPlayer().GetColor();
+                    if(gs.GetCurrentPlayer().GetColor() == p1.GetColor())
+                    {
+                        p1.GenerateNewMoveLearning(gs);
+                    }
+                    else
+                    {
+                        p2.GenerateNewRandomMove(gs);
+                    }
+                    string colorAfterMove = gs.GetCurrentPlayer().GetColor();
+                }
             }
         }
     }
