@@ -239,13 +239,20 @@ namespace Checkers
         public List<Move> GetAllAvailableMoves(char[][] board)
         {
             List<Move> allAvailableMoves = new List<Move>();
+            List<Move> allEdibleMoves = new List<Move>();
 
             for(int row = 0; row < 8; row++)
             {
                 for (int col = 0; col < 8; col++)
                 {
                     allAvailableMoves.AddRange(CurrentPieceAvailableMoves(board, row, col));
+                    allEdibleMoves.AddRange(CurrentPieceEdibleMoves(board, row, col));
                 }
+            }
+
+            if(allEdibleMoves.Count > 0)
+            {
+                return allEdibleMoves;
             }
 
             return allAvailableMoves;

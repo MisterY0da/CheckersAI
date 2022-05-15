@@ -72,7 +72,7 @@ namespace Checkers
 
                 while (gs.GameIsOver() == false)
                 {
-                    string colorBeforeMove = gs.GetCurrentPlayer().GetColor();
+                    //string colorBeforeMove = gs.GetCurrentPlayer().GetColor();
                     if(gs.GetCurrentPlayer().GetColor() == p1.GetColor())
                     {
                         p1.GenerateNewMoveLearning(gs);
@@ -81,7 +81,7 @@ namespace Checkers
                     {
                         p2.GenerateNewRandomMove(gs);
                     }
-                    string colorAfterMove = gs.GetCurrentPlayer().GetColor();
+                    //string colorAfterMove = gs.GetCurrentPlayer().GetColor();
                 }
             }
         }
