@@ -14,7 +14,17 @@ namespace Checkers
             this.qLearning = qLearning;
         }
 
-        public void GenerateNewRandomMove(GameState gs, bool isLearning = false, AgentState agentState = null, List<Move> actionsThisGame = null)
+        public override void GenerateNewMove(GameState gs)
+        {
+            List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
+
+            Move move = GetOptimalMove(gs.GetBoard());
+
+            TakeFullMove(gs, move.RowStart, move.ColStart, move.RowEnd, move.ColEnd);
+        }
+
+        public void GenerateNewRandomMove(GameState gs, bool isLearning = false, AgentState agentState = null, 
+            List<Move> actionsThisGame = null)
         {
             List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
 
@@ -83,6 +93,31 @@ namespace Checkers
             {
                 gs.SwitchPlayer();
             }
+        }
+
+        public Move GetOptimalMove(char[][] board)
+        {
+            Move move = null;
+
+            foreach (var state in qLearning.qTable)
+            {
+                AgentState agentState = new AgentState(board);
+                if (state.Equals(agentState))
+                {
+                    double max = -999;
+                    for (int i = 0; i < agentState.actionsPrices.Count; i++)
+                    {
+                        if (state.actionsPrices[i] > max)
+                        {
+                            max = state.actionsPrices[i];
+                            move = agentState.actions[i];
+                        }
+                    }
+                    break;
+                }
+            }
+
+            return move;
         }
     }
 }

@@ -18,11 +18,11 @@ namespace Checkers
         }        
 
         public void Train(int numberOfGames)
-        {
-            ComputerPlayer environmentPlayer = new ComputerPlayer("black", this);
-            ComputerPlayer learningPlayer = new ComputerPlayer("white", this);
+        {            
             for (int gameIndex = 0; gameIndex < numberOfGames; gameIndex++)
-            {                
+            {
+                ComputerPlayer environmentPlayer = new ComputerPlayer("black", this);
+                ComputerPlayer learningPlayer = new ComputerPlayer("white", this);
                 GameState gs = new GameState(learningPlayer, environmentPlayer);
                 List<AgentState> agentStatesThisGame = new List<AgentState>();
                 List<Move> actionsThisGame = new List<Move>();
@@ -45,15 +45,23 @@ namespace Checkers
                     }
                 }
 
+                int reward;
+                // если у противника не осталось ходов
+                if(environmentPlayer.GetAllAvailableMoves(gs.GetBoard()).Count == 0)
+                {
+                    reward = 100;
+                }
+                else
+                {
+                    reward = -100;
+                }
 
+                UpdateQTable(agentStatesThisGame, actionsThisGame, reward);
             }
         }
 
         public void UpdateQTable(List<AgentState> agentStatesThisGame, List<Move> actionsThisGame, int reward)
         {
-            /*int newState = currentAction;
-            qTable[currentState][currentAction] += alpha * (reward + gamma * qTable[newState].Max() - qTable[currentState][currentAction]);*/
-
             // идем с конца, учитывая результат партии
             for(int i = agentStatesThisGame.Count - 1; i >= 0; i--)
             {
@@ -61,11 +69,39 @@ namespace Checkers
                 {
                     if(agentStatesThisGame[i].Equals(agentState))
                     {
-                        //actionIndex = GetActionIndex(agentState, actionsThisGame[i]);
-                        //agentState.actionsPrices[i] += 
+                        int actionIndex = GetActionIndex(agentState, actionsThisGame[i]);
+
+                        if (i == agentStatesThisGame.Count - 1)
+                        {
+                            agentState.actionsPrices[actionIndex] += reward;
+                        }
+
+                        else
+                        {
+                            //действие совершенное в этом состоянии                            
+                            agentState.actionsPrices[actionIndex] +=
+                                alpha * (reward + gamma * GetMaxActionValue(agentState) - agentState.actionsPrices[actionIndex]);
+                        }
+
+                        break;
                     }
                 }
             }
+        }
+
+        public double GetMaxActionValue(AgentState state)
+        {
+            double maxValue = -999;
+
+            for (int i = 0; i < state.actionsPrices.Count; i++)
+            {
+                if(state.actionsPrices[i] > maxValue)
+                {
+                    maxValue = state.actionsPrices[i];
+                }
+            }
+
+            return maxValue;
         }
 
         public int GetActionIndex(AgentState state, Move action)

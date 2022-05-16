@@ -8,19 +8,24 @@ namespace Checkers
 {
     public class AgentState : IEquatable<AgentState>
     {
-        public char[][] stateValue = new char[8][];
+        public char[][] stateValue;
         public List<Move> actions;
         public List<double> actionsPrices;
 
         public AgentState(char[][] board)
         {
+            stateValue = new char[8][];
             for (int i = 0; i < 8; i++)
             {
+                stateValue[i] = new char[8];
                 for (int j = 0; j < 8; j++)
                 {
                     stateValue[i][j] = board[i][j];
                 }
             }
+
+            actions = new List<Move>();
+            actionsPrices = new List<double>();
         }
 
         public bool Equals(AgentState otherState)

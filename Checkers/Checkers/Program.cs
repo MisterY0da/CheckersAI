@@ -7,11 +7,14 @@ namespace Checkers
         static void Main(string[] args)
         {
             QLearning qLearning = new QLearning();
-            //qLearning.Train(1000);
+            qLearning.Train(1000);
             Console.WriteLine("Trained");
+            Console.WriteLine("States count: " + qLearning.qTable.Count);
             Console.WriteLine();
-            ComputerPlayer p1 = new ComputerPlayer("white", qLearning);
-            ComputerPlayer p2 = new ComputerPlayer("black", qLearning);
+            /*ComputerPlayer p1 = new ComputerPlayer("white", qLearning);
+            ComputerPlayer p2 = new ComputerPlayer("black", qLearning);*/
+            Player p1 = new ComputerPlayer("white", qLearning);
+            Player p2 = new HumanPlayer("black");
             GameState gs = new GameState(p1, p2);
             gs.ShowBoard();
             Console.WriteLine();
@@ -19,20 +22,20 @@ namespace Checkers
             while (gs.GameIsOver() == false)
             {
                 //string colorBeforeMove = gs.GetCurrentPlayer().GetColor();
-                //gs.GetCurrentPlayer().GenerateNewMove(gs);
+                gs.GetCurrentPlayer().GenerateNewMove(gs);
                 //string colorAfterMove = gs.GetCurrentPlayer().GetColor();
 
                 //if (colorBeforeMove != colorAfterMove)
                 //{
 
-                if (gs.GetCurrentPlayer().GetColor() == p1.GetColor())
+                /*if (gs.GetCurrentPlayer().GetColor() == p1.GetColor())
                 {
                     p1.GenerateNewRandomMove(gs);
                 }
                 else
                 {
                     p2.GenerateNewRandomMove(gs);
-                }
+                }*/
 
                 Console.WriteLine();
                 Console.WriteLine("Board state:");
