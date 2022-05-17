@@ -97,23 +97,14 @@ namespace Checkers
 
         public Move GetOptimalMove(char[][] board)
         {
-            Move move = null;
+            Move move = new Move();
 
             foreach (var state in qLearning.qTable)
             {
                 AgentState agentState = new AgentState(board);
                 if (state.Equals(agentState))
                 {
-                    double max = -999;
-                    for (int i = 0; i < agentState.actionsPrices.Count; i++)
-                    {
-                        if (state.actionsPrices[i] > max)
-                        {
-                            max = state.actionsPrices[i];
-                            move = agentState.actions[i];
-                        }
-                    }
-                    break;
+                    return state.actions[0];
                 }
             }
 

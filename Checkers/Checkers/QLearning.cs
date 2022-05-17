@@ -18,11 +18,13 @@ namespace Checkers
         }        
 
         public void Train(int numberOfGames)
-        {            
+        {
+            ComputerPlayer environmentPlayer = new ComputerPlayer("black");
+            ComputerPlayer learningPlayer = new ComputerPlayer("white", this);
+
             for (int gameIndex = 0; gameIndex < numberOfGames; gameIndex++)
             {
-                ComputerPlayer environmentPlayer = new ComputerPlayer("black", this);
-                ComputerPlayer learningPlayer = new ComputerPlayer("white", this);
+                
                 GameState gs = new GameState(learningPlayer, environmentPlayer);
                 List<AgentState> agentStatesThisGame = new List<AgentState>();
                 List<Move> actionsThisGame = new List<Move>();
@@ -32,12 +34,12 @@ namespace Checkers
                     if (gs.GetCurrentPlayer().GetColor() == learningPlayer.GetColor())
                     {
                         AgentState agentState = new AgentState(gs.GetBoard());
-                        if(this.qTable.Contains(agentState) == false)
+                        if(qTable.Contains(agentState) == false)
                         {
                             qTable.Add(agentState);
                         }
                         agentStatesThisGame.Add(agentState);
-                        learningPlayer.GenerateNewRandomMove(gs, true, agentState, actionsThisGame);
+                        learningPlayer.GenerateNewRandomMove(gs, true, agentState, actionsThisGame);                       
                     }
                     else
                     {

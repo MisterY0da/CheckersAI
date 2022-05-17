@@ -30,20 +30,22 @@ namespace Checkers
 
         public bool Equals(AgentState otherState)
         {
-            bool areEqual = true;
+            return GetStateString().Equals(otherState.GetStateString());
+        }
+
+        public string GetStateString()
+        {
+            StringBuilder sb = new StringBuilder();
+
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    areEqual = this.stateValue[i][j] == otherState.stateValue[i][j];
-                    if(areEqual == false)
-                    {
-                        break;
-                    }
+                    sb.Append(stateValue[i][j]);
                 }
             }
 
-            return areEqual;
+            return sb.ToString();
         }
     }
 }
