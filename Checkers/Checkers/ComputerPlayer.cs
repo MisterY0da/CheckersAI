@@ -16,9 +16,7 @@ namespace Checkers
 
         public override void GenerateNewMove(GameState gs)
         {
-            List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
-
-            Move move = GetOptimalMove(gs.GetBoard());
+            Move move = GetOptimalMove(gs.GetBoard());            
 
             TakeFullMove(gs, move.RowStart, move.ColStart, move.RowEnd, move.ColEnd);
         }
@@ -97,18 +95,34 @@ namespace Checkers
 
         public Move GetOptimalMove(char[][] board)
         {
-            Move move = new Move();
-
             foreach (var state in qLearning.qTable)
             {
                 AgentState agentState = new AgentState(board);
                 if (state.Equals(agentState))
                 {
-                    return state.actions[0];
+                    int indexMaxMove = 0;
+                    double maxValue = state.actionsPrices[0];
+
+                    for (int i = 0; i < state.actionsPrices.Count; i++)
+                    {
+                        if (state.actionsPrices[i] > maxValue)
+                        {
+                            maxValue = state.actionsPrices[i];
+                            indexMaxMove = i;
+                        }
+                    }
+
+                    return state.actions[indexMaxMove];
                 }
             }
 
-            return move;
+            List<Move> moves = GetAllAvailableMoves(board);
+
+            Random rnd = new Random();
+
+            int moveIndex = rnd.Next(0, moves.Count);
+
+            return moves[moveIndex];
         }
     }
 }

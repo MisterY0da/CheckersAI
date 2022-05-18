@@ -7,9 +7,17 @@ namespace Checkers
         static void Main(string[] args)
         {
             QLearning qLearning = new QLearning();
-            qLearning.Train(300);
+            qLearning.Train(200);
             Console.WriteLine("Trained");
             Console.WriteLine("States obtained: " + qLearning.qTable.Count);
+            /*for(int i = 0; i < qLearning.qTable.Count; i++)
+            {
+                Console.WriteLine("Table #" + i + " actions count: " + qLearning.qTable[i].actions.Count + ", prices count: " + qLearning.qTable[i].actionsPrices.Count);
+                foreach(var price in qLearning.qTable[i].actionsPrices)
+                {
+                    Console.WriteLine("price " + price);
+                }
+            }*/
             /*for (int q = 0; q < qLearning.qTable.Count; q++)
             {
                 Console.WriteLine("State # " + q);
@@ -48,9 +56,9 @@ namespace Checkers
                     "; price:" + qLearning.qTable[q].actionsPrices[0]);
                 Console.WriteLine();
                 Console.WriteLine();
-            }*/
+            }
             Console.WriteLine();
-            /*ComputerPlayer p1 = new ComputerPlayer("white", qLearning);
+            ComputerPlayer p1 = new ComputerPlayer("white", qLearning);
             ComputerPlayer p2 = new ComputerPlayer("black", qLearning);*/
             Player p1 = new ComputerPlayer("white", qLearning);
             Player p2 = new HumanPlayer("black");
@@ -58,29 +66,35 @@ namespace Checkers
             gs.ShowBoard();
             Console.WriteLine();
 
-            for (int i = 0; i < 1000; i++)
+            gs = new GameState(p1, p2);
+            while (gs.GameIsOver() == false)
             {
-                gs = new GameState(p1, p2);
-                while (gs.GameIsOver() == false)
-                {
-                    gs.GetCurrentPlayer().GenerateNewMove(gs);
 
-                    /*if (gs.GetCurrentPlayer().GetColor() == p1.GetColor())
-                    {
-                        p1.GenerateNewRandomMove(gs);
-                    }
-                    else
-                    {
-                        p2.GenerateNewRandomMove(gs);
-                    }*/
-                    //qLearning.qTable.Add(new AgentState(gs.GetBoard()));
-                    Console.WriteLine();
-                    Console.WriteLine("Board state:");
-                    gs.ShowBoard();
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.ReadLine();
+                gs.GetCurrentPlayer().GenerateNewMove(gs);
+
+                /*if (gs.GetCurrentPlayer().GetColor() == p1.GetColor())
+                {
+                    p1.GenerateNewRandomMove(gs);
                 }
+                else
+                {
+                    p2.GenerateNewRandomMove(gs);
+                }*/
+                Console.WriteLine();
+                Console.WriteLine("Board state:");
+                gs.ShowBoard();
+                if (qLearning.qTable.Contains(new AgentState(gs.GetBoard())))
+                {
+                    Console.WriteLine("this state is obtained");
+                }
+                else
+                {
+                    Console.WriteLine("this state is NOT obtained");
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.ReadLine();
+
             }
         }
     }

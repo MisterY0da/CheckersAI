@@ -49,7 +49,7 @@ namespace Checkers
 
                 int reward;
                 // если у противника не осталось ходов
-                if(environmentPlayer.GetAllAvailableMoves(gs.GetBoard()).Count == 0)
+                if (environmentPlayer.GetAllAvailableMoves(gs.GetBoard()).Count == 0)
                 {
                     reward = 100;
                 }
@@ -64,36 +64,54 @@ namespace Checkers
 
         public void UpdateQTable(List<AgentState> agentStatesThisGame, List<Move> actionsThisGame, int reward)
         {
-            // идем с конца, учитывая результат партии
-            for(int i = agentStatesThisGame.Count - 1; i >= 0; i--)
+            CalculateGameActionsPrices(agentStatesThisGame, actionsThisGame, reward);
+            
+            foreach (var state in qTable)
             {
-                foreach(var agentState in qTable)
+                foreach (var stateThisGame in agentStatesThisGame)
                 {
-                    if(agentStatesThisGame[i].Equals(agentState))
+                    if(stateThisGame.Equals(state))
                     {
-                        int actionIndex = GetActionIndex(agentState, actionsThisGame[i]);
-
-                        if (i == agentStatesThisGame.Count - 1)
-                        {
-                            agentState.actionsPrices[actionIndex] += reward;
-                        }
-
-                        else
-                        {
-                            //действие совершенное в этом состоянии                            
-                            agentState.actionsPrices[actionIndex] +=
-                                alpha * (reward + gamma * GetMaxActionValue(agentState) - agentState.actionsPrices[actionIndex]);
-                        }
-
-                        break;
+                        UpdateQTablePrices(state, stateThisGame);
                     }
+                }
+            }
+        }
+
+        public void CalculateGameActionsPrices(List<AgentState> agentStatesThisGame, List<Move> actionsThisGame, int reward)
+        {
+            // идем с конца, учитывая результат партии
+            int actionIndex = GetActionIndex(agentStatesThisGame[actionsThisGame.Count-1], actionsThisGame[actionsThisGame.Count-1]);
+            agentStatesThisGame[actionsThisGame.Count-1].actionsPrices[actionIndex] = reward;
+
+            for (int i = actionsThisGame.Count - 2; i >= 0; i--)
+            {
+                actionIndex = GetActionIndex(agentStatesThisGame[i], actionsThisGame[i]);
+                agentStatesThisGame[i].actionsPrices[actionIndex] +=
+                    alpha * (reward + gamma * GetMaxActionValue(agentStatesThisGame[i]) - agentStatesThisGame[i].actionsPrices[actionIndex]);
+            }
+        }
+
+        public void UpdateQTablePrices(AgentState qTableState, AgentState ThisGameState)
+        {
+            for(int i = 0; i < ThisGameState.actions.Count; i++)
+            {
+                if(qTableState.actions.Contains(ThisGameState.actions[i]))
+                {
+                    int actionIndex = GetActionIndex(qTableState, ThisGameState.actions[i]);
+                    qTableState.actionsPrices[actionIndex] += ThisGameState.actionsPrices[i];
+                }
+                else
+                {
+                    qTableState.actions.Add(ThisGameState.actions[i]);
+                    qTableState.actionsPrices.Add(ThisGameState.actionsPrices[i]);
                 }
             }
         }
 
         public double GetMaxActionValue(AgentState state)
         {
-            double maxValue = -999;
+            double maxValue = state.actionsPrices[0];
 
             for (int i = 0; i < state.actionsPrices.Count; i++)
             {
@@ -108,17 +126,15 @@ namespace Checkers
 
         public int GetActionIndex(AgentState state, Move action)
         {
-            int index = 0;
             for(int i = 0; i < state.actions.Count; i++)
             {
                 if(state.actions[i].Equals(action))
                 {
-                    index = i;
-                    break;
+                    return i;
                 }
             }
 
-            return index;
+            return 0;
         }
     }
 }
