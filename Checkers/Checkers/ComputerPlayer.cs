@@ -16,12 +16,12 @@ namespace Checkers
 
         public override void GenerateNewMove(GameState gs)
         {
-            Move move = GetOptimalMove(gs.GetBoard());            
+            Move move = GetGreedyMove(gs.GetBoard());            
 
             TakeFullMove(gs, move.RowStart, move.ColStart, move.RowEnd, move.ColEnd);
         }
 
-        public void GenerateNewRandomMove(GameState gs, bool isLearning = false, AgentState agentState = null, 
+        public void GenerateNewMoveLearning(GameState gs, bool isLearning = false, AgentState agentState = null, 
             List<Move> actionsThisGame = null)
         {
             List<Move> moves = GetAllAvailableMoves(gs.GetBoard());
@@ -32,12 +32,24 @@ namespace Checkers
 
             Move move = moves[moveIndex];
 
-            if(isLearning == true && agentState != null && actionsThisGame != null 
-                && agentState.actions.Contains(move) == false )
+            if(isLearning == true && agentState != null && actionsThisGame != null)
             {
-                agentState.actions.Add(move);
-                agentState.actionsPrices.Add(0);
-                actionsThisGame.Add(move);
+                int randomFactor = rnd.Next(0, 100);
+
+                // выбираем жадный ход с вероятностью (1-epsilon)
+                // т.е. вероятность того, что randomFactor >= epsilonInPercents равна (1-epsilon)
+                if (randomFactor >= qLearning.epsilonInPercents)
+                {
+                    move = GetGreedyMove(agentState.stateValue);
+                }
+                
+                // выбираем случайный ход
+                else if(agentState.actions.Contains(move) == false)
+                {
+                    agentState.actions.Add(move);
+                    agentState.actionsPrices.Add(0);
+                    actionsThisGame.Add(move);
+                }
             }
 
             TakeFullMove(gs, move.RowStart, move.ColStart, move.RowEnd, move.ColEnd);
@@ -93,7 +105,7 @@ namespace Checkers
             }
         }
 
-        public Move GetOptimalMove(char[][] board)
+        public Move GetGreedyMove(char[][] board)
         {
             foreach (var state in qLearning.qTable)
             {

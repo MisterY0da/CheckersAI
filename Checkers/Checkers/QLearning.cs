@@ -11,6 +11,7 @@ namespace Checkers
         public List<AgentState> qTable;
         public double alpha = 0.1;
         public double gamma = 0.8;
+        public int epsilonInPercents = 10;
 
         public QLearning()
         {
@@ -39,11 +40,11 @@ namespace Checkers
                             qTable.Add(agentState);
                         }
                         agentStatesThisGame.Add(agentState);
-                        learningPlayer.GenerateNewRandomMove(gs, true, agentState, actionsThisGame);                       
+                        learningPlayer.GenerateNewMoveLearning(gs, true, agentState, actionsThisGame);                       
                     }
                     else
                     {
-                        environmentPlayer.GenerateNewRandomMove(gs);
+                        environmentPlayer.GenerateNewMoveLearning(gs);
                     }
                 }
 
