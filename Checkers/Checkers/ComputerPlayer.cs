@@ -38,7 +38,7 @@ namespace Checkers
 
                 // выбираем жадный ход с вероятностью (1-epsilon)
                 // т.е. вероятность того, что randomFactor >= epsilonInPercents равна (1-epsilon)
-                if (randomFactor >= qLearning.epsilonInPercents)
+                if (randomFactor >= qLearning.epsilonInPercents && agentState.actionsPrices.Count > 0)
                 {
                     move = GetGreedyMove(agentState.stateValue);
                 }

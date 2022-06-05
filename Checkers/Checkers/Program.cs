@@ -17,7 +17,7 @@ namespace Checkers
             gs.ShowBoard();
             Console.WriteLine();
 
-            gs = new GameState(p1, p2);
+            /*gs = new GameState(p1, p2);
             while (gs.GameIsOver() == false)
             {
 
@@ -38,7 +38,7 @@ namespace Checkers
                 Console.WriteLine();
                 Console.ReadLine();
 
-            }
+            }*/
         }
     }
 }
