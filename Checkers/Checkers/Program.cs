@@ -7,7 +7,7 @@ namespace Checkers
         static void Main(string[] args)
         {
             QLearning qLearning = new QLearning();
-            qLearning.Train(200);
+            qLearning.Train(500);
             Console.WriteLine("Trained");
             Console.WriteLine("States obtained: " + qLearning.qTable.Count);
             /*for(int i = 0; i < qLearning.qTable.Count; i++)
