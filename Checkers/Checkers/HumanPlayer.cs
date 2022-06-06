@@ -9,30 +9,10 @@ namespace Checkers
     public class HumanPlayer : Player
     {
         public HumanPlayer(string someColor) : base(someColor) { }
-
+        public Move currentMove;
         public override void GenerateNewMove(GameState gs)
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("Input rowStart: ");
-            int rowStart = int.Parse(Console.ReadLine());
-            Console.ResetColor();
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("Input colStart: ");
-            int colStart = int.Parse(Console.ReadLine());
-            Console.ResetColor();
-
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("Input rowEnd: ");
-            int rowEnd = int.Parse(Console.ReadLine());
-            Console.ResetColor();
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("Input colEnd: ");
-            int colEnd = int.Parse(Console.ReadLine());
-            Console.ResetColor();
-
-            TakeFullMove(gs, rowStart, colStart, rowEnd, colEnd);
+            TakeFullMove(gs, currentMove.RowStart, currentMove.ColStart, currentMove.RowEnd, currentMove.ColEnd);
         }
 
         public override void TakeFullMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
@@ -58,15 +38,9 @@ namespace Checkers
                         !BecameKing(gs, rowCurrent, colCurrent))
                     {
                         //////////////////////////////////////////////////
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.Write("Input rowEnd: ");
-                        int newRowEnd = int.Parse(Console.ReadLine());
-                        Console.ResetColor();
+                        int newRowEnd = currentMove.RowEnd;
 
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("Input colEnd: ");
-                        int newColEnd = int.Parse(Console.ReadLine());
-                        Console.ResetColor();
+                        int newColEnd = currentMove.ColEnd;
                         //////////////////////////////////////////////////
 
                         thisMove = new Move(rowCurrent, colCurrent, newRowEnd, newColEnd);

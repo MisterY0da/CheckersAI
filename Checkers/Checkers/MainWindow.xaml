@@ -1,0 +1,38 @@
+﻿<Window x:Class="Checkers.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Checkers"
+        mc:Ignorable="d"
+        Title="Checkers" Height="700" Width="920">
+    <Grid>
+        <Grid Margin="82,51,290,88">
+            <UniformGrid Rows="8" Columns="8" Name="BoardUniformGrid" Margin="0,0,82,78">
+
+            </UniformGrid>
+            <UniformGrid Rows="8" Columns="1" Margin="471,0,42,78">
+                <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="3" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="4" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="6" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+                <TextBlock Text="7" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="26"/>
+            </UniformGrid>
+            <UniformGrid Rows="1" Columns="8" Margin="0,467,82,10">
+                <TextBlock Text="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="1" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="4" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="5" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="6" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+                <TextBlock Text="7" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26"/>
+            </UniformGrid>
+        </Grid>
+        <Button Content="Сделать ход" Name="MakeMoveBtn" FontSize="18" HorizontalAlignment="Left" Margin="689,51,0,0" VerticalAlignment="Top" Height="56" Width="130" Click="MakeMoveBtn_Click"/>
+        <ComboBox HorizontalAlignment="Left" Name="MovesCmbBox" FontSize="18" Margin="635,177,0,0" VerticalAlignment="Top" Width="238" Height="39" SelectionChanged="MovesCmbBox_SelectionChanged"/>
+    </Grid>
+</Window>
