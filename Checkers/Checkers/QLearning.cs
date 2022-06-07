@@ -89,7 +89,7 @@ namespace Checkers
             {
                 actionIndex = GetActionIndex(agentStatesThisGame[i], actionsThisGame[i]);
                 agentStatesThisGame[i].actionsPrices[actionIndex] +=
-                    alpha * (reward + gamma * GetMaxActionValue(agentStatesThisGame[i]) - agentStatesThisGame[i].actionsPrices[actionIndex]);
+                    alpha * (reward + gamma * GetMaxActionValue(agentStatesThisGame[i+1]) - agentStatesThisGame[i].actionsPrices[actionIndex]);
             }
         }
 
