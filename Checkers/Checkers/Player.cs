@@ -5,15 +5,15 @@ namespace Checkers
 {
     public class Player
     {
-        protected string _color;
+        protected string color;
         public Player(string someColor)
         {
-            _color = someColor;
+            color = someColor;
         }       
 
         public string GetColor()
         {
-            return _color;
+            return color;
         }
 
         public virtual void TakeFullMove(GameState gs, int rowStart, int colStart, int rowEnd, int colEnd)
@@ -263,7 +263,7 @@ namespace Checkers
             List<Move> availableMoves = new List<Move>();
 
             // черная шашка
-            if (board[rowCurrent][colCurrent] == 'b' && _color == "black")
+            if (board[rowCurrent][colCurrent] == 'b' && color == "black")
             {
                 if(MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1) && board[rowCurrent - 1][colCurrent + 1] == '_')
                 {
@@ -289,7 +289,7 @@ namespace Checkers
             }
 
             // шашка белая
-            else if (board[rowCurrent][colCurrent] == 'w' && _color == "white")
+            else if (board[rowCurrent][colCurrent] == 'w' && color == "white")
             {
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 1, colCurrent + 1) && board[rowCurrent + 1][colCurrent + 1] == '_')
                 {
@@ -315,7 +315,7 @@ namespace Checkers
             }
 
             // дамка черных
-            else if (board[rowCurrent][colCurrent] == 'B' && _color == "black")
+            else if (board[rowCurrent][colCurrent] == 'B' && color == "black")
             {
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1) && board[rowCurrent - 1][colCurrent + 1] == '_')
                 {
@@ -365,7 +365,7 @@ namespace Checkers
             }         
 
             // дамка белых
-            else if (board[rowCurrent][colCurrent] == 'W' && _color == "white")
+            else if (board[rowCurrent][colCurrent] == 'W' && color == "white")
             {
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 1, colCurrent + 1) && board[rowCurrent - 1][colCurrent + 1] == '_')
                 {
@@ -445,7 +445,7 @@ namespace Checkers
             List<Move> edibleMoves = new List<Move>();
 
             // шашка белая
-            if (board[rowCurrent][colCurrent] == 'w' && _color == "white")
+            if (board[rowCurrent][colCurrent] == 'w' && color == "white")
             {
                 // вниз-влево
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && (board[rowCurrent + 2][colCurrent - 2] == '_') &&
@@ -463,7 +463,7 @@ namespace Checkers
             }
 
             // шашка черная
-            else if (board[rowCurrent][colCurrent] == 'b' && _color == "black")
+            else if (board[rowCurrent][colCurrent] == 'b' && color == "black")
             {
                 // вверх-влево
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent - 2, colCurrent - 2) && (board[rowCurrent - 2][colCurrent - 2] == '_') &&
@@ -481,7 +481,7 @@ namespace Checkers
             }
 
             // дамка белая
-            else if (board[rowCurrent][colCurrent] == 'W' && _color == "white")
+            else if (board[rowCurrent][colCurrent] == 'W' && color == "white")
             {
                 // вниз-влево
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && (board[rowCurrent + 2][colCurrent - 2] == '_') &&
@@ -513,7 +513,7 @@ namespace Checkers
             }
 
             // дамка черная
-            else if (board[rowCurrent][colCurrent] == 'B' && _color == "black")
+            else if (board[rowCurrent][colCurrent] == 'B' && color == "black")
             {
                 // вниз-влево
                 if (MoveIsInsideBoard(rowCurrent, colCurrent, rowCurrent + 2, colCurrent - 2) && (board[rowCurrent + 2][colCurrent - 2] == '_') &&

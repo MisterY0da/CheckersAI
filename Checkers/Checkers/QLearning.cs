@@ -9,8 +9,8 @@ namespace Checkers
     public class QLearning
     {
         public List<AgentState> qTable;
-        public double alpha = 0.1;
-        public double gamma = 0.8;
+        private double alpha = 1;
+        private double gamma = 0.9;
         public int epsilonInPercents = 10;
 
         public QLearning()

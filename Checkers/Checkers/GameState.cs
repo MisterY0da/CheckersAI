@@ -42,41 +42,7 @@ namespace Checkers
             }
             
             return false;
-        }
-
-        public void ShowBoard()
-        {
-            Console.Write(" ");
-            Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < 8; i++) { Console.Write(" " + i); }
-            Console.ResetColor();
-
-            Console.WriteLine();
-            for (int i = 0; i < 8; i++)
-            {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(i + " ");
-                Console.ResetColor();
-
-                for (int j = 0; j < 8; j++)
-                {
-                    Console.Write(_board[i][j] + " ");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(i);
-                Console.ResetColor();
-
-                Console.WriteLine();
-            }
-
-            Console.Write(" ");
-            Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < 8; i++) { Console.Write(" " + i); }
-            Console.ResetColor();
-
-            Console.WriteLine("\nwho moves: " + _currentPlayer.GetColor());
-        }
+        }      
 
         public char[][] GetBoard()
         {
