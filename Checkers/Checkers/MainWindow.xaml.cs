@@ -97,7 +97,7 @@ namespace Checkers
 
             foreach (var move in moves)
             {
-                string moveString = move.RowStart + "," + move.ColStart + "->" + move.RowEnd + "," + move.ColEnd;
+                string moveString = "стр." + move.RowStart + ",кол." + move.ColStart + "->стр." + move.RowEnd + ",кол." + move.ColEnd;
                 MovesCmbBox.Items.Add(moveString);
             }
         }
@@ -119,7 +119,7 @@ namespace Checkers
         public Move GetMoveFromCmbBox()
         {
             string moveString = MovesCmbBox.SelectedItem.ToString();
-            return new Move(int.Parse(moveString[0].ToString()), int.Parse(moveString[2].ToString()), int.Parse(moveString[5].ToString()), int.Parse(moveString[7].ToString()));
+            return new Move(int.Parse(moveString[4].ToString()), int.Parse(moveString[10].ToString()), int.Parse(moveString[17].ToString()), int.Parse(moveString[23].ToString()));
         }
     }
 
