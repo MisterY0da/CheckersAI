@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,7 +16,7 @@ namespace Checkers
         public MainWindow()
         {
             
-            //qLearning.Train(100);
+            qLearning.Train(50);
             
             
             InitializeComponent();
@@ -45,7 +46,7 @@ namespace Checkers
                             ImageBrush textImageBrush = new ImageBrush();
                             textImageBrush.ImageSource =
                             new BitmapImage(
-                                new Uri(@"black.png", UriKind.Relative)
+                                new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Pictures\black.png"))
                             );
                             textImageBrush.AlignmentX = AlignmentX.Center;
                             tb.Background = textImageBrush;
@@ -55,7 +56,7 @@ namespace Checkers
                             ImageBrush textImageBrush = new ImageBrush();
                             textImageBrush.ImageSource =
                             new BitmapImage(
-                                new Uri(@"white.png", UriKind.Relative)
+                                new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Pictures\white.png"))
                             );
                             textImageBrush.AlignmentX = AlignmentX.Center;
                             tb.Background = textImageBrush;
@@ -66,7 +67,7 @@ namespace Checkers
                             ImageBrush textImageBrush = new ImageBrush();
                             textImageBrush.ImageSource =
                             new BitmapImage(
-                                new Uri(@"blackKing.png", UriKind.Relative)
+                                new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Pictures\blackKing.png"))
                             );
                             textImageBrush.AlignmentX = AlignmentX.Center;
                             tb.Background = textImageBrush;
@@ -76,7 +77,7 @@ namespace Checkers
                             ImageBrush textImageBrush = new ImageBrush();
                             textImageBrush.ImageSource =
                             new BitmapImage(
-                                new Uri(@"whiteKing.png", UriKind.Relative)
+                                new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Pictures\whiteKing.png"))
                             );
                             textImageBrush.AlignmentX = AlignmentX.Center;
                             tb.Background = textImageBrush;
